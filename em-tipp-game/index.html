@@ -5,15 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EM Tipp Game</title>
     <style>
+        :root {
+            --primary-color: #1a1a2e;
+            --secondary-color: #16213e;
+            --accent-color: #0f3460;
+            --text-color: #e94560;
+            --background-color: #0a0a23;
+            --input-background-color: #16213e;
+            --input-text-color: #e94560;
+            --button-background-color: #e94560;
+            --button-text-color: #ffffff;
+        }
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: var(--background-color);
+            color: var(--text-color);
         }
         header, footer {
-            background-color: #333;
-            color: white;
+            background-color: var(--primary-color);
+            color: var(--text-color);
             text-align: center;
             padding: 1em 0;
         }
@@ -24,14 +36,16 @@
         nav a {
             margin: 0 1em;
             text-decoration: none;
-            color: #333;
+            color: var(--text-color);
+            font-weight: bold;
         }
         .container {
             width: 80%;
             margin: 0 auto;
-            padding: 1em;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 2em;
+            background-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            border-radius: 8px;
         }
         form {
             display: flex;
@@ -39,19 +53,37 @@
         }
         form input, form button {
             margin: 0.5em 0;
-            padding: 0.5em;
+            padding: 0.8em;
             font-size: 1em;
+            border: none;
+            border-radius: 5px;
+        }
+        form input {
+            background-color: var(--input-background-color);
+            color: var(--input-text-color);
+        }
+        form button {
+            background-color: var(--button-background-color);
+            color: var(--button-text-color);
+            cursor: pointer;
         }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 1em;
         }
         table, th, td {
-            border: 1px solid #ddd;
+            border: 1px solid var(--accent-color);
         }
         th, td {
             padding: 1em;
             text-align: left;
+        }
+        th {
+            background-color: var(--primary-color);
+        }
+        td {
+            background-color: var(--secondary-color);
         }
     </style>
 </head>
@@ -90,16 +122,7 @@
     <div id="prediction" class="container">
         <h2>Make Your Predictions</h2>
         <form id="predictionForm">
-            <label for="match1">Match 1: Team A vs Team B</label>
-            <input type="text" id="match1" placeholder="Your Prediction">
-            <label for="match2">Match 2: Team C vs Team D</label>
-            <input type="text" id="match2" placeholder="Your Prediction">
-            <label for="match3">Match 3: Team E vs Team F</label>
-            <input type="text" id="match3" placeholder="Your Prediction">
-            <label for="match4">Match 4: Team G vs Team H</label>
-            <input type="text" id="match4" placeholder="Your Prediction">
-            <label for="match5">Match 5: Team I vs Team J</label>
-            <input type="text" id="match5" placeholder="Your Prediction">
+            <!-- Match inputs will be inserted here by JavaScript -->
             <button type="submit">Submit Predictions</button>
         </form>
     </div>
@@ -109,6 +132,7 @@
             <tr>
                 <th>Username</th>
                 <th>Score</th>
+                <th>Results</th>
             </tr>
             <!-- Dynamic rows will be inserted here -->
         </table>
@@ -118,6 +142,17 @@
     </footer>
     <script>
         const apiUrl = 'https://api.openligadb.de/getmatchdata/bl1/2023';
+
+        async function fetchMatchResults() {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            return data.slice(0, 5).map((match, index) => ({
+                matchId: index + 1,
+                team1: match.Team1.TeamName,
+                team2: match.Team2.TeamName,
+                result: match.MatchResults.length ? `${match.MatchResults[0].PointsTeam1}-${match.MatchResults[0].PointsTeam2}` : 'N/A'
+            }));
+        }
 
         document.getElementById('signupForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -165,21 +200,20 @@
 
         document.getElementById('predictionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const match1 = document.getElementById('match1').value;
-            const match2 = document.getElementById('match2').value;
-            const match3 = document.getElementById('match3').value;
-            const match4 = document.getElementById('match4').value;
-            const match5 = document.getElementById('match5').value;
+            const predictions = {};
+            document.querySelectorAll('.prediction-input').forEach(input => {
+                predictions[input.name] = input.value;
+            });
             const token = localStorage.getItem('token');
 
-            if (token && match1 && match2 && match3 && match4 && match5) {
+            if (token && Object.keys(predictions).length === 5) {
                 const response = await fetch('/api/predictions/submit', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ match1, match2, match3, match4, match5 })
+                    body: JSON.stringify(predictions)
                 });
                 const data = await response.json();
                 alert(data.message || 'Error occurred');
@@ -190,19 +224,31 @@
             }
         });
 
-        async function fetchMatchResults() {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            return data;
+        async function updatePredictionForm() {
+            const matches = await fetchMatchResults();
+            const form = document.getElementById('predictionForm');
+            matches.forEach(match => {
+                const label = document.createElement('label');
+                label.setAttribute('for', `match${match.matchId}`);
+                label.textContent = `${match.team1} vs ${match.team2}`;
+                const input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('id', `match${match.matchId}`);
+                input.setAttribute('name', `match${match.matchId}`);
+                input.setAttribute('placeholder', 'Your Prediction');
+                input.classList.add('prediction-input');
+                form.insertBefore(label, form.lastElementChild);
+                form.insertBefore(input, form.lastElementChild);
+            });
         }
 
         function calculateScore(predictions, results) {
             let score = 0;
-            if (predictions.match1 === results.match1) score += 5;
-            if (predictions.match2 === results.match2) score += 5;
-            if (predictions.match3 === results.match3) score += 5;
-            if (predictions.match4 === results.match4) score += 5;
-            if (predictions.match5 === results.match5) score += 5;
+            results.forEach(result => {
+                if (predictions[`match${result.matchId}`] === result.result) {
+                    score += 5;
+                }
+            });
             return score;
         }
 
@@ -212,18 +258,24 @@
                 <tr>
                     <th>Username</th>
                     <th>Score</th>
+                    <th>Results</th>
                 </tr>
             `;
             const response = await fetch('/api/predictions/leaderboard');
             const data = await response.json();
+            const results = await fetchMatchResults();
             data.forEach(entry => {
                 const row = table.insertRow();
                 row.insertCell(0).textContent = entry.username;
                 row.insertCell(1).textContent = entry.score;
+                row.insertCell(2).textContent = results.map(result => `${result.team1} vs ${result.team2}: ${result.result}`).join(', ');
             });
         }
 
-        document.addEventListener('DOMContentLoaded', updateLeaderboard);
+        document.addEventListener('DOMContentLoaded', async () => {
+            await updatePredictionForm();
+            updateLeaderboard();
+        });
     </script>
 </body>
 </html>
