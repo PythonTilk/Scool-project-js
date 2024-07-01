@@ -5,181 +5,186 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EM Tipp Game</title>
     <style>
-        :root {
-            --primary-color: #1a1a2e;
-            --secondary-color: #16213e;
-            --accent-color: #0f3460;
-            --text-color: #e94560;
-            --background-color: #0a0a23;
-            --input-background-color: #16213e;
-            --input-text-color: #e94560;
-            --button-background-color: #e94560;
-            --button-text-color: #ffffff;
-        }
         body {
-            font-family: 'Arial', sans-serif;
+            background-color: #1e1e1e;
+            color: #fff;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-        header, footer {
-            background-color: var(--primary-color);
-            color: var(--text-color);
-            text-align: center;
-            padding: 1em 0;
-        }
-        nav {
-            text-align: center;
-            margin: 1em 0;
-        }
-        nav a {
-            margin: 0 1em;
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: bold;
-        }
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            padding: 2em;
-            background-color: var(--secondary-color);
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            border-radius: 8px;
-        }
-        form {
             display: flex;
+            justify-content: center;
+            align-items: center;
             flex-direction: column;
+            min-height: 100vh;
         }
-        form input, form button {
-            margin: 0.5em 0;
-            padding: 0.8em;
-            font-size: 1em;
-            border: none;
+        header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        main {
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+        input, button {
+            display: block;
+            width: calc(50% - 10px);
+            padding: 10px;
+            margin: 10px 5px;
             border-radius: 5px;
+            border: none;
+            font-size: 1em;
         }
-        form input {
-            background-color: var(--input-background-color);
-            color: var(--input-text-color);
-        }
-        form button {
-            background-color: var(--button-background-color);
-            color: var(--button-text-color);
+        button {
+            background-color: #28a745;
+            color: #fff;
             cursor: pointer;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1em;
+        button:hover {
+            background-color: #218838;
         }
-        table, th, td {
-            border: 1px solid var(--accent-color);
+        .form-section {
+            margin-bottom: 30px;
         }
-        th, td {
-            padding: 1em;
-            text-align: left;
+        .match-prediction {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        th {
-            background-color: var(--primary-color);
+        .match-prediction input {
+            width: 45%;
         }
-        td {
-            background-color: var(--secondary-color);
+        h2 {
+            text-align: center;
+        }
+        .match {
+            margin-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            background: #444;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>Welcome to the EM Tipp Game</h1>
+        <h1>EM Tipp Game</h1>
     </header>
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#signup">Sign Up</a>
-        <a href="#login">Login</a>
-        <a href="#prediction">Make Prediction</a>
-        <a href="#leaderboard">Leaderboard</a>
-    </nav>
-    <div id="home" class="container">
-        <h2>About the Game</h2>
-        <p>Predict the outcomes of the European Championship matches and compete with others!</p>
-    </div>
-    <div id="signup" class="container">
-        <h2>Sign Up</h2>
-        <form id="signupForm">
-            <input type="text" id="signupUsername" placeholder="Username" required>
-            <input type="email" id="signupEmail" placeholder="Email" required>
-            <input type="password" id="signupPassword" placeholder="Password" required>
-            <button type="submit">Sign Up</button>
-        </form>
-    </div>
-    <div id="login" class="container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="text" id="loginUsername" placeholder="Username" required>
-            <input type="password" id="loginPassword" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
-    </div>
-    <div id="prediction" class="container">
-        <h2>Make Your Predictions</h2>
-        <form id="predictionForm">
-            <!-- Match inputs will be inserted here by JavaScript -->
-            <button type="submit">Submit Predictions</button>
-        </form>
-    </div>
-    <div id="leaderboard" class="container">
-        <h2>Leaderboard</h2>
-        <table id="leaderboardTable">
-            <tr>
-                <th>Username</th>
-                <th>Score</th>
-                <th>Results</th>
-            </tr>
-            <!-- Dynamic rows will be inserted here -->
-        </table>
-    </div>
+    <main>
+        <section class="form-section" id="auth-section">
+            <h2>Sign Up</h2>
+            <form id="signup-form">
+                <input type="text" id="signup-username" placeholder="Username" required>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <input type="password" id="signup-password" placeholder="Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+            <h2>Log In</h2>
+            <form id="login-form">
+                <input type="text" id="login-username" placeholder="Username" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Log In</button>
+            </form>
+        </section>
+        <section class="form-section" id="prediction-section" style="display: none;">
+            <h2>Submit Your Predictions</h2>
+            <form id="prediction-form">
+                <!-- Match predictions will be inserted here by JavaScript -->
+            </form>
+        </section>
+        <section id="leaderboard-section" style="display: none;">
+            <h2>Leaderboard</h2>
+            <ul id="leaderboard"></ul>
+        </section>
+    </main>
     <footer>
-        <p>Contact us at support@emtippgame.com</p>
+        <p>&copy; 2024 EM Tipp Game</p>
     </footer>
     <script>
-        const apiUrl = 'https://api.openligadb.de/getmatchdata/bl1/2023';
+        const signupForm = document.getElementById('signup-form');
+        const loginForm = document.getElementById('login-form');
+        const predictionForm = document.getElementById('prediction-form');
+        const authSection = document.getElementById('auth-section');
+        const predictionSection = document.getElementById('prediction-section');
+        const leaderboardSection = document.getElementById('leaderboard-section');
+        const leaderboard = document.getElementById('leaderboard');
+        
+        let token = null;
+        let matches = [];
 
-        async function fetchMatchResults() {
-            const response = await fetch(apiUrl);
-            const data = await response.json();
-            return data.slice(0, 5).map((match, index) => ({
-                matchId: index + 1,
-                team1: match.Team1.TeamName,
-                team2: match.Team2.TeamName,
-                result: match.MatchResults.length ? `${match.MatchResults[0].PointsTeam1}-${match.MatchResults[0].PointsTeam2}` : 'N/A'
-            }));
+        async function fetchMatches() {
+            try {
+                const response = await fetch('https://api.openligadb.de/getmatchdata/em2024');
+                const data = await response.json();
+                console.log(data); // Log the data to check its structure
+                if (Array.isArray(data)) {
+                    matches = data;
+                    renderMatchPredictions();
+                } else {
+                    console.error('API response is not an array:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching match data:', error);
+            }
         }
 
-        document.getElementById('signupForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const username = document.getElementById('signupUsername').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
+        function renderMatchPredictions() {
+            if (!Array.isArray(matches)) {
+                console.error('Matches is not an array:', matches);
+                return;
+            }
+            predictionForm.innerHTML = matches.map(match => `
+                <div class="match">
+                    <div class="match-prediction">
+                        <label>${match.Team1.TeamName} vs ${match.Team2.TeamName}</label>
+                        <input type="number" placeholder="${match.Team1.TeamName} score" data-team1="${match.Team1.TeamId}" required>
+                        <input type="number" placeholder="${match.Team2.TeamName} score" data-team2="${match.Team2.TeamId}" required>
+                    </div>
+                </div>
+            `).join('') + `<button type="submit">Submit Predictions</button>`;
+        }
 
-            if (username && email && password) {
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('signup-username').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            try {
                 const response = await fetch('/api/auth/signup', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, email, password })
                 });
                 const data = await response.json();
-                alert(data.message || 'Error occurred');
-                document.getElementById('signupForm').reset();
-            } else {
-                alert('Please fill out all fields.');
+                if (data.message) {
+                    alert(data.message);
+                } else {
+                    alert('Signup failed: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
             }
         });
 
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const username = document.getElementById('loginUsername').value;
-            const password = document.getElementById('loginPassword').value;
-
-            if (username && password) {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            try {
                 const response = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -187,95 +192,65 @@
                 });
                 const data = await response.json();
                 if (data.token) {
-                    localStorage.setItem('token', data.token);
-                    alert('Login successful!');
-                    document.getElementById('loginForm').reset();
+                    token = data.token;
+                    authSection.style.display = 'none';
+                    predictionSection.style.display = 'block';
+                    leaderboardSection.style.display = 'block';
+                    fetchMatches();
+                    fetchLeaderboard();
                 } else {
-                    alert(data.error || 'Error occurred');
+                    alert('Invalid login credentials');
                 }
-            } else {
-                alert('Please fill out all fields.');
+            } catch (error) {
+                alert('Error: ' + error.message);
             }
         });
 
-        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+        predictionForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const predictions = {};
-            document.querySelectorAll('.prediction-input').forEach(input => {
-                predictions[input.name] = input.value;
-            });
-            const token = localStorage.getItem('token');
-
-            if (token && Object.keys(predictions).length === 5) {
+            const predictions = matches.map((match, index) => ({
+                matchId: match.MatchID,
+                team1: match.Team1.TeamId,
+                team2: match.Team2.TeamId,
+                score1: predictionForm.elements[index * 2].value,
+                score2: predictionForm.elements[index * 2 + 1].value
+            }));
+            try {
                 const response = await fetch('/api/predictions/submit', {
                     method: 'POST',
-                    headers: {
+                    headers: { 
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify(predictions)
+                    body: JSON.stringify({ predictions })
                 });
                 const data = await response.json();
-                alert(data.message || 'Error occurred');
-                document.getElementById('predictionForm').reset();
-                updateLeaderboard();
-            } else {
-                alert('Please make sure you are logged in and have filled out all fields.');
+                if (data.message) {
+                    alert(data.message);
+                    fetchLeaderboard();
+                } else {
+                    alert('Submission failed: ' + data.error);
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
             }
         });
 
-        async function updatePredictionForm() {
-            const matches = await fetchMatchResults();
-            const form = document.getElementById('predictionForm');
-            matches.forEach(match => {
-                const label = document.createElement('label');
-                label.setAttribute('for', `match${match.matchId}`);
-                label.textContent = `${match.team1} vs ${match.team2}`;
-                const input = document.createElement('input');
-                input.setAttribute('type', 'text');
-                input.setAttribute('id', `match${match.matchId}`);
-                input.setAttribute('name', `match${match.matchId}`);
-                input.setAttribute('placeholder', 'Your Prediction');
-                input.classList.add('prediction-input');
-                form.insertBefore(label, form.lastElementChild);
-                form.insertBefore(input, form.lastElementChild);
-            });
+        async function fetchLeaderboard() {
+            try {
+                const response = await fetch('/api/predictions/leaderboard', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const data = await response.json();
+                leaderboard.innerHTML = data.map(user => 
+                    `<li>${user.username}: ${user.score}</li>`
+                ).join('');
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
         }
-
-        function calculateScore(predictions, results) {
-            let score = 0;
-            results.forEach(result => {
-                if (predictions[`match${result.matchId}`] === result.result) {
-                    score += 5;
-                }
-            });
-            return score;
-        }
-
-        async function updateLeaderboard() {
-            const table = document.getElementById('leaderboardTable');
-            table.innerHTML = `
-                <tr>
-                    <th>Username</th>
-                    <th>Score</th>
-                    <th>Results</th>
-                </tr>
-            `;
-            const response = await fetch('/api/predictions/leaderboard');
-            const data = await response.json();
-            const results = await fetchMatchResults();
-            data.forEach(entry => {
-                const row = table.insertRow();
-                row.insertCell(0).textContent = entry.username;
-                row.insertCell(1).textContent = entry.score;
-                row.insertCell(2).textContent = results.map(result => `${result.team1} vs ${result.team2}: ${result.result}`).join(', ');
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', async () => {
-            await updatePredictionForm();
-            updateLeaderboard();
-        });
     </script>
 </body>
 </html>
